@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final heightScreen = MediaQuery.of(context).size.height;
     final widthScreen = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -45,12 +46,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(fontSize: 20.0, color: Colors.black54),
                 ),
               ),
-              SizedBox(height: heightScreen * 0.05),
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Container(
+                  height: 200,
+                  width: 200,
+                  child: Image.asset('assets/img/security.png',
+                      fit: BoxFit.contain),
+                ),
+              ),
               Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 50.0, right: 50.0, top: 50.0),
+                        left: 50.0, right: 50.0, top: 30.0),
                     child: TextFormField(
                       controller: emailController,
                       validator: (val) {
@@ -69,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 50.0, right: 50.0, top: 30.0),
+                        left: 50.0, right: 50.0, top: 20.0),
                     child: TextFormField(
                       obscureText: selectedValue,
                       controller: passwordController,
@@ -106,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Container(
                     padding: const EdgeInsets.only(
-                        left: 50.0, right: 50.0, top: 80.0),
+                        left: 50.0, right: 50.0, top: 30.0),
                     width: 350,
                     child: SizedBox(
                       width: double.infinity,
@@ -124,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const Padding(
                     padding:
-                        EdgeInsets.only(left: 30.0, right: 30.0, top: 90.0),
+                        EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
                     child: Divider(
                       color: Colors.black45,
                       height: 1,
@@ -162,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {},
                           icon: const Icon(
                             Icons.phone,
-                            color: Color.fromRGBO(244, 180, 0, 1),
+                            color: Color.fromRGBO(15, 157, 88, 1),
                             size: 40.0,
                           ),
                         ),
