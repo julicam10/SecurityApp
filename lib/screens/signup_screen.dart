@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:security_app/widgets/emailTextFormField_widget.dart';
-import 'package:security_app/widgets/nameTextFormField_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -20,6 +18,10 @@ bool selectedValueOne = true;
 class _SignUpScreen extends State<SignUpScreen> {
   final scaffolKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordOneController = TextEditingController();
+  final passwordTwoController = TextEditingController();
 
   @override
   void initState() {
@@ -81,7 +83,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                     height: heightScreen / 1.7,
                     width: widthScreen * 0.9,
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     child: Form(
@@ -93,13 +95,13 @@ class _SignUpScreen extends State<SignUpScreen> {
                         ),
                         child: Column(
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(top: 15.0),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
                               child: NameTextFormField(),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(top: 15.0),
-                              child: EmailTextformField(),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: EmailTextFormField(),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
@@ -150,7 +152,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color.fromRGBO(255, 95, 0, 1),
+                          primary: const Color.fromRGBO(61, 178, 255, 1),
                           textStyle: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -170,9 +172,46 @@ class _SignUpScreen extends State<SignUpScreen> {
     );
   }
 
+  TextFormField NameTextFormField() {
+    return TextFormField(
+      controller: nameController,
+      keyboardType: TextInputType.name,
+      textCapitalization: TextCapitalization.words,
+      validator: (name) {
+        if (name!.isEmpty) {
+          return 'Please type your name';
+        }
+      },
+      onSaved: (val) => name = val!,
+      decoration: const InputDecoration(
+        hintText: 'Juan Carlos Gomez',
+        labelText: 'Enter your name',
+      ),
+    );
+  }
+
+  TextFormField EmailTextFormField() {
+    return TextFormField(
+      controller: emailController,
+      validator: (val) {
+        if (!val!.contains('@') || !val.contains('.')) {
+          return 'Invalid Email';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (val) => email = val!,
+      decoration: const InputDecoration(
+        hintText: 'email@example.com',
+        labelText: 'Enter your email',
+      ),
+    );
+  }
+
   TextFormField PasswordTextFormField() {
     return TextFormField(
       obscureText: selectedValueOne,
+      controller: passwordOneController,
       validator: (passwordOne) {
         if (passwordOne!.isEmpty) {
           return 'Please type something';
@@ -196,7 +235,7 @@ class _SignUpScreen extends State<SignUpScreen> {
       },
       onSaved: (passwordOne) {
         passwordOne = passwordOne!;
-        // print(passwordOne);
+        print(passwordOne);
       },
       decoration: InputDecoration(
         hintText: '*****************',
@@ -219,29 +258,16 @@ class _SignUpScreen extends State<SignUpScreen> {
   TextFormField ConfirmpasswordTextFormField() {
     return TextFormField(
       obscureText: passwordVisibleTwo,
+      controller: passwordTwoController,
       validator: (passwordTwo) {
         if (passwordTwo!.isEmpty) {
           return 'Please type something';
         }
-        if (passwordTwo.length < 8) {
-          return 'Your password needs more characters';
+        if (passwordTwoController.text != passwordOneController.text) {
+          return 'Password are not the same';
+        } else {
+          return null;
         }
-        if (!passwordTwo.contains(RegExp(r"[a-z]"))) {
-          return 'Your password needs a lowercase letter';
-        }
-        if (!passwordTwo.contains(RegExp(r"[A-Z]"))) {
-          return 'Your password needs an upcase letter';
-        }
-        if (!passwordTwo.contains(RegExp(r"[0-9]"))) {
-          return 'Your password needs a number';
-        }
-        if (!passwordTwo.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-          return 'Your password needs a special character';
-        }
-        // if (passwordTwo != _passwordOne) {
-        //   return 'Your password are not the same';
-        // }
-        return null;
       },
       onSaved: (passwordTwo) {
         passwordTwo = passwordTwo!;
@@ -266,11 +292,12 @@ class _SignUpScreen extends State<SignUpScreen> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Row RolWidgets() {
     return Row(
       children: [
         const Text(
-          'What is your position?',
+          'What is your rol?',
           style: TextStyle(
             fontSize: 18,
           ),
@@ -285,13 +312,15 @@ class _SignUpScreen extends State<SignUpScreen> {
             ),
             value: selectedValue,
             items: const [
-              DropdownMenuItem(child: Text("None"), value: "None"),
-              DropdownMenuItem(child: Text("Boss"), value: "Boss"),
-              DropdownMenuItem(child: Text("Shop"), value: "Shop"),
+              DropdownMenuItem(
+                  child: Text("None"), value: "None", enabled: false),
+              DropdownMenuItem(child: Text("Admin"), value: "Admin"),
+              DropdownMenuItem(child: Text("Seller"), value: "Seller"),
             ],
             onChanged: (String? newValue) {
               setState(() {
                 selectedValue = newValue!;
+                print(selectedValue);
               });
             },
           ),
