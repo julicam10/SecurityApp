@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:security_app/screens/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -57,11 +58,12 @@ class _SignUpScreen extends State<SignUpScreen> {
               const Padding(
                 padding: EdgeInsets.only(left: 20.0, top: 30.0),
                 child: Text(
-                  'Singup',
+                  'Hello,',
                   style: TextStyle(
                     color: Color.fromRGBO(255, 95, 0, 1),
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
+                    letterSpacing: 3.0,
                   ),
                 ),
               ),
@@ -136,7 +138,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             )),
-                        child: const Text('Submit'),
+                        child: const Text('SIGN UP'),
                         onPressed: _submit,
                       ),
                     ),
@@ -159,7 +161,12 @@ class _SignUpScreen extends State<SignUpScreen> {
                           ),
                         ),
                         child: const Text('Login'),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()));
+                        },
                       ),
                     ),
                   ),
