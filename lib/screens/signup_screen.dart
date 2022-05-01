@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:security_app/screens/login_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -31,7 +33,6 @@ class _SignUpScreen extends State<SignUpScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -55,23 +56,23 @@ class _SignUpScreen extends State<SignUpScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 20.0, top: 30.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, top: 30.0),
                 child: Text(
                   'Hello,',
-                  style: TextStyle(
-                    color: Color.fromRGBO(255, 95, 0, 1),
+                  style: GoogleFonts.openSans(
+                    color: const Color.fromRGBO(255, 95, 0, 1),
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 3.0,
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 30.0, left: 20.0),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 30.0, left: 20.0),
                 child: Text(
                   'Create a new account with us',
-                  style: TextStyle(
+                  style: GoogleFonts.roboto(
                     color: Colors.white70,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -138,7 +139,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             )),
-                        child: const Text('SIGN UP'),
+                        child: Text('SIGN UP', style: GoogleFonts.openSans()),
                         onPressed: _submit,
                       ),
                     ),
@@ -148,28 +149,52 @@ class _SignUpScreen extends State<SignUpScreen> {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0),
-                  child: Container(
-                    width: 350,
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: const Color.fromRGBO(61, 178, 255, 1),
-                          textStyle: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: const Text('Login'),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()));
-                        },
+                  child: Text.rich(
+                    TextSpan(
+                      text: 'Already have an account? ',
+                      style: GoogleFonts.roboto(
+                        color: Colors.white,
+                        fontSize: 20,
                       ),
+                      children: <InlineSpan>[
+                        TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen())),
+                          text: 'Sign in',
+                          style: GoogleFonts.roboto(
+                            color: const Color.fromRGBO(13, 129, 255, 1),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        )
+                      ],
                     ),
                   ),
+                  // child: Container(
+                  //   width: 350,
+                  //   child: SizedBox(
+                  //     width: double.infinity,
+                  //     child: ElevatedButton(
+                  //       style: ElevatedButton.styleFrom(
+                  //         primary: const Color.fromRGBO(13, 129, 255, 0.9),
+                  //         textStyle: const TextStyle(
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.bold,
+                  //         ),
+                  //       ),
+                  //       child: Text('Login', style: GoogleFonts.openSans()),
+                  //       onPressed: () {
+                  //         Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //                 builder: (context) => LoginScreen()));
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
                 ),
               ),
             ],
@@ -183,6 +208,7 @@ class _SignUpScreen extends State<SignUpScreen> {
     return TextFormField(
       controller: nameController,
       keyboardType: TextInputType.name,
+      style: GoogleFonts.openSans(),
       textCapitalization: TextCapitalization.words,
       validator: (name) {
         if (name!.isEmpty) {
@@ -200,6 +226,8 @@ class _SignUpScreen extends State<SignUpScreen> {
   TextFormField EmailTextFormField() {
     return TextFormField(
       controller: emailController,
+      style: GoogleFonts.openSans(),
+      keyboardType: TextInputType.emailAddress,
       validator: (val) {
         if (!val!.contains('@') || !val.contains('.')) {
           return 'Invalid Email';
@@ -219,6 +247,7 @@ class _SignUpScreen extends State<SignUpScreen> {
     return TextFormField(
       obscureText: selectedValueOne,
       controller: passwordOneController,
+      style: GoogleFonts.openSans(),
       validator: (passwordOne) {
         if (passwordOne!.isEmpty) {
           return 'Please type something';
@@ -266,6 +295,7 @@ class _SignUpScreen extends State<SignUpScreen> {
     return TextFormField(
       obscureText: passwordVisibleTwo,
       controller: passwordTwoController,
+      style: GoogleFonts.openSans(),
       validator: (passwordTwo) {
         if (passwordTwo!.isEmpty) {
           return 'Please type something';
@@ -303,9 +333,9 @@ class _SignUpScreen extends State<SignUpScreen> {
   Row RolWidgets() {
     return Row(
       children: [
-        const Text(
+        Text(
           'What is your rol?',
-          style: TextStyle(
+          style: GoogleFonts.openSans(
             fontSize: 18,
           ),
         ),
@@ -318,11 +348,17 @@ class _SignUpScreen extends State<SignUpScreen> {
               fontWeight: FontWeight.w600,
             ),
             value: selectedValue,
-            items: const [
+            items: [
               DropdownMenuItem(
-                  child: Text("None"), value: "None", enabled: false),
-              DropdownMenuItem(child: Text("Admin"), value: "Admin"),
-              DropdownMenuItem(child: Text("Seller"), value: "Seller"),
+                  child: Text("None", style: GoogleFonts.openSans()),
+                  value: "None",
+                  enabled: false),
+              DropdownMenuItem(
+                  child: Text("Admin", style: GoogleFonts.openSans()),
+                  value: "Admin"),
+              DropdownMenuItem(
+                  child: Text("Seller", style: GoogleFonts.openSans()),
+                  value: "Seller"),
             ],
             onChanged: (String? newValue) {
               setState(() {
