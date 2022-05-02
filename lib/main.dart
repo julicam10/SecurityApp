@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:security_app/screens/HomePage.dart';
 import 'package:security_app/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:security_app/screens/verify_email_page.dart';
 
 // void main() => runApp(MyApp());
 
@@ -39,7 +40,7 @@ class MainPage extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const Center(child: Text('Something went wrong'));
           } else if (snapshot.hasData) {
-            return HomeScreen();
+            return VerifyEmailPage();
           } else {
             return LoginScreen();
           }

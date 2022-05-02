@@ -1,7 +1,10 @@
+// ignore_for_file: avoid_print, non_constant_identifier_names
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:security_app/screens/login_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -40,6 +43,25 @@ class _SignUpScreen extends State<SignUpScreen> {
     final form = formKey.currentState;
     if (form!.validate()) {
       form.save();
+    }
+  }
+
+  Future singIn() async {
+    _submit();
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordTwoController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      String error = e.message!;
+      final _snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 2),
+        content: Text(error),
+      );
+      // ignore: deprecated_member_use
+      scaffolKey.currentState?.showSnackBar(_snackBar);
     }
   }
 
@@ -112,7 +134,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
-                              child: ConfirmpasswordTextFormField(),
+                              child: ConfirmPasswordTextFormField(),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
@@ -140,7 +162,11 @@ class _SignUpScreen extends State<SignUpScreen> {
                               fontWeight: FontWeight.bold,
                             )),
                         child: Text('SIGN UP', style: GoogleFonts.openSans()),
-                        onPressed: _submit,
+                        onPressed: () {
+                          setState(() {
+                            singIn();
+                          });
+                        },
                       ),
                     ),
                   ),
@@ -173,28 +199,6 @@ class _SignUpScreen extends State<SignUpScreen> {
                       ],
                     ),
                   ),
-                  // child: Container(
-                  //   width: 350,
-                  //   child: SizedBox(
-                  //     width: double.infinity,
-                  //     child: ElevatedButton(
-                  //       style: ElevatedButton.styleFrom(
-                  //         primary: const Color.fromRGBO(13, 129, 255, 0.9),
-                  //         textStyle: const TextStyle(
-                  //           fontSize: 20,
-                  //           fontWeight: FontWeight.bold,
-                  //         ),
-                  //       ),
-                  //       child: Text('Login', style: GoogleFonts.openSans()),
-                  //       onPressed: () {
-                  //         Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //                 builder: (context) => LoginScreen()));
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
                 ),
               ),
             ],
@@ -291,7 +295,7 @@ class _SignUpScreen extends State<SignUpScreen> {
     );
   }
 
-  TextFormField ConfirmpasswordTextFormField() {
+  TextFormField ConfirmPasswordTextFormField() {
     return TextFormField(
       obscureText: passwordVisibleTwo,
       controller: passwordTwoController,
