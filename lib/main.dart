@@ -14,14 +14,18 @@ Future main() async {
   runApp(MyApp());
 }
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
+// ignore: use_key_in_widget_constructors
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Material App',
       debugShowCheckedModeBanner: false,
       // home: SignUpScreen(),
-      home: MainPage(),
+      home: const MainPage(),
+      navigatorKey: navigatorKey,
     );
   }
 }

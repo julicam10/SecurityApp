@@ -2,6 +2,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:security_app/main.dart';
 import 'package:security_app/screens/login_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,6 +49,11 @@ class _SignUpScreen extends State<SignUpScreen> {
 
   Future singIn() async {
     _submit();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -62,6 +68,7 @@ class _SignUpScreen extends State<SignUpScreen> {
       );
       // ignore: deprecated_member_use
       scaffolKey.currentState?.showSnackBar(_snackBar);
+      navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
   }
 
@@ -150,6 +157,7 @@ class _SignUpScreen extends State<SignUpScreen> {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0),
+                  // ignore: sized_box_for_whitespace
                   child: Container(
                     width: 350,
                     child: SizedBox(
@@ -333,7 +341,6 @@ class _SignUpScreen extends State<SignUpScreen> {
     );
   }
 
-  // ignore: non_constant_identifier_names
   Row RolWidgets() {
     return Row(
       children: [

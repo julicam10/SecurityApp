@@ -1,9 +1,10 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:security_app/main.dart';
 import 'package:security_app/screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,7 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -36,15 +36,16 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-  void _submit() {
+  Future singIn(context) async {
     final form = formKey.currentState;
     if (form!.validate()) {
       form.save();
     }
-  }
-
-  Future singIn(context) async {
-    _submit();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -60,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       // ignore: deprecated_member_use
       scaffolKey.currentState?.showSnackBar(_snackBar);
+      navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
   }
 
@@ -95,7 +97,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Sign in to continue',
                       style: GoogleFonts.openSans(
-                          fontSize: 20.0, color: Colors.black54),
+                        fontSize: 20.0,
+                        color: Colors.black54,
+                      ),
                     ),
                   ),
                   Form(
