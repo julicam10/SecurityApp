@@ -18,6 +18,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   bool isEmailVerify = false;
   Timer? timer;
   bool canResendEmail = false;
+
   @override
   void initState() {
     super.initState();

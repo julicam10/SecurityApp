@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: const Color.fromRGBO(255, 95, 0, 1),
+                      primary: const Color.fromRGBO(13, 129, 255, 0.9),
                       textStyle: GoogleFonts.roboto(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

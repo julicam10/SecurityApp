@@ -49,11 +49,6 @@ class _SignUpScreen extends State<SignUpScreen> {
 
   Future singIn() async {
     _submit();
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const Center(child: CircularProgressIndicator()),
-    );
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),

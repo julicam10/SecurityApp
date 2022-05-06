@@ -1,10 +1,12 @@
 // ignore_for_file: avoid_print, prefer_const_constructors_in_immutables
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:security_app/main.dart';
+import 'package:security_app/screens/forgot_password_screen.dart';
 import 'package:security_app/screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -41,11 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
     if (form!.validate()) {
       form.save();
     }
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const Center(child: CircularProgressIndicator()),
-    );
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -214,7 +211,36 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: widthScreen * 0.10),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text.rich(
+                            TextSpan(
+                              text: '',
+                              style: GoogleFonts.roboto(
+                                color: Colors.black54,
+                                fontSize: 20,
+                              ),
+                              children: <InlineSpan>[
+                                TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ForgotPasswordPage())),
+                                  text: 'Forgot Password ?',
+                                  style: GoogleFonts.roboto(
+                                    color:
+                                        const Color.fromRGBO(13, 129, 255, 1),
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 20,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: widthScreen * 0.050),
                         const Padding(
                           padding: EdgeInsets.only(
                               left: 30.0, right: 30.0, top: 30.0),
