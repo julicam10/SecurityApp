@@ -21,6 +21,8 @@ String passwordTwo = '';
 String selectedValue = 'None';
 bool passwordVisibleTwo = true;
 bool selectedValueOne = true;
+String _enteredText = '';
+String _enteredText2 = '';
 
 class _SignUpScreen extends State<SignUpScreen> {
   final scaffolKey = GlobalKey<ScaffoldState>();
@@ -40,29 +42,25 @@ class _SignUpScreen extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void _submit() {
+  Future singIn() async {
     final form = formKey.currentState;
     if (form!.validate()) {
       form.save();
-    }
-  }
-
-  Future singIn() async {
-    _submit();
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordTwoController.text.trim(),
-      );
-    } on FirebaseAuthException catch (e) {
-      String error = e.message!;
-      final _snackBar = SnackBar(
-        backgroundColor: Colors.red,
-        duration: const Duration(seconds: 2),
-        content: Text(error),
-      );
-      // ignore: deprecated_member_use
-      scaffolKey.currentState?.showSnackBar(_snackBar);
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordTwoController.text.trim(),
+        );
+      } on FirebaseAuthException catch (e) {
+        String error = e.message!;
+        final _snackBar = SnackBar(
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+          content: Text(error),
+        );
+        // ignore: deprecated_member_use
+        scaffolKey.currentState?.showSnackBar(_snackBar);
+      }
       navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
   }
@@ -107,7 +105,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Container(
-                    height: heightScreen / 1.7,
+                    height: heightScreen / 1.9,
                     width: widthScreen * 0.9,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -138,10 +136,6 @@ class _SignUpScreen extends State<SignUpScreen> {
                               padding: const EdgeInsets.only(top: 15.0),
                               child: ConfirmPasswordTextFormField(),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: RolWidgets(),
-                            )
                           ],
                         ),
                       ),
@@ -151,7 +145,7 @@ class _SignUpScreen extends State<SignUpScreen> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.only(top: 60.0),
                   // ignore: sized_box_for_whitespace
                   child: Container(
                     width: 350,
@@ -280,6 +274,11 @@ class _SignUpScreen extends State<SignUpScreen> {
         passwordOne = passwordOne!;
         print(passwordOne);
       },
+      onChanged: (passwordOne) {
+        setState(() {
+          _enteredText = passwordOne;
+        });
+      },
       decoration: InputDecoration(
         hintText: '*****************',
         labelText: 'Password',
@@ -294,6 +293,13 @@ class _SignUpScreen extends State<SignUpScreen> {
             });
           },
         ),
+        counterText: _enteredText.length > 8 ? 'High Security' : 'Low Security',
+        counterStyle: TextStyle(
+          color: _enteredText.length > 8
+              ? const Color.fromRGBO(13, 129, 255, 1)
+              : const Color.fromRGBO(255, 95, 0, 1),
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -307,6 +313,21 @@ class _SignUpScreen extends State<SignUpScreen> {
         if (passwordTwo!.isEmpty) {
           return 'Please type something';
         }
+        if (passwordTwo.length < 8) {
+          return 'Your password needs more characters';
+        }
+        if (!passwordTwo.contains(RegExp(r"[a-z]"))) {
+          return 'Your password needs a lowercase letter';
+        }
+        if (!passwordTwo.contains(RegExp(r"[A-Z]"))) {
+          return 'Your password needs an upcase letter';
+        }
+        if (!passwordTwo.contains(RegExp(r"[0-9]"))) {
+          return 'Your password needs a number';
+        }
+        if (!passwordTwo.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+          return 'Your password needs a special character';
+        }
         if (passwordTwoController.text != passwordOneController.text) {
           return 'Password are not the same';
         } else {
@@ -316,6 +337,11 @@ class _SignUpScreen extends State<SignUpScreen> {
       onSaved: (passwordTwo) {
         passwordTwo = passwordTwo!;
         print(passwordTwo);
+      },
+      onChanged: (passwordTwo) {
+        setState(() {
+          _enteredText2 = passwordTwo;
+        });
       },
       decoration: InputDecoration(
         hintText: '*****************',
@@ -332,49 +358,15 @@ class _SignUpScreen extends State<SignUpScreen> {
             });
           },
         ),
+        counterText:
+            _enteredText2.length > 8 ? 'High Security' : 'Low Security',
+        counterStyle: TextStyle(
+          color: _enteredText2.length > 8
+              ? const Color.fromRGBO(13, 129, 255, 1)
+              : const Color.fromRGBO(255, 95, 0, 1),
+          fontWeight: FontWeight.bold,
+        ),
       ),
-    );
-  }
-
-  Row RolWidgets() {
-    return Row(
-      children: [
-        Text(
-          'What is your rol?',
-          style: GoogleFonts.openSans(
-            fontSize: 18,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 25.0),
-          child: DropdownButton(
-            style: const TextStyle(
-              fontSize: 18.0,
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-            ),
-            value: selectedValue,
-            items: [
-              DropdownMenuItem(
-                  child: Text("None", style: GoogleFonts.openSans()),
-                  value: "None",
-                  enabled: false),
-              DropdownMenuItem(
-                  child: Text("Admin", style: GoogleFonts.openSans()),
-                  value: "Admin"),
-              DropdownMenuItem(
-                  child: Text("Seller", style: GoogleFonts.openSans()),
-                  value: "Seller"),
-            ],
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedValue = newValue!;
-                print(selectedValue);
-              });
-            },
-          ),
-        ),
-      ],
     );
   }
 }

@@ -117,7 +117,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
     try {
       final _snackBar2 = SnackBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.green,
         duration: Duration(seconds: 4),
         content: Text('Password Reset Email Sent'),
       );
