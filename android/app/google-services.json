@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "329577219266",
+    "project_id": "securityapp-1aa7d",
+    "storage_bucket": "securityapp-1aa7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329577219266:android:89a90d7f4d8d97ee34275b",
+        "android_client_info": {
+          "package_name": "com.example.security_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329577219266-hgb0jshls3432nnqg3a5fadkhug28kqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWrO4BqThthvieS2Y2Cu1Vz7jhuzeLfDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329577219266-hgb0jshls3432nnqg3a5fadkhug28kqe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

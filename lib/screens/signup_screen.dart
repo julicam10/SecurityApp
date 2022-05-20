@@ -1,4 +1,11 @@
+// ignore_for_file: avoid_print, non_constant_identifier_names
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:security_app/main.dart';
+import 'package:security_app/screens/login_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -14,6 +21,8 @@ String passwordTwo = '';
 String selectedValue = 'None';
 bool passwordVisibleTwo = true;
 bool selectedValueOne = true;
+String _enteredText = '';
+String _enteredText2 = '';
 
 class _SignUpScreen extends State<SignUpScreen> {
   final scaffolKey = GlobalKey<ScaffoldState>();
@@ -30,14 +39,29 @@ class _SignUpScreen extends State<SignUpScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
-  void _submit() {
+  Future singIn() async {
     final form = formKey.currentState;
     if (form!.validate()) {
       form.save();
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordTwoController.text.trim(),
+        );
+      } on FirebaseAuthException catch (e) {
+        String error = e.message!;
+        final _snackBar = SnackBar(
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+          content: Text(error),
+        );
+        // ignore: deprecated_member_use
+        scaffolKey.currentState?.showSnackBar(_snackBar);
+      }
+      navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
   }
 
@@ -54,22 +78,23 @@ class _SignUpScreen extends State<SignUpScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 20.0, top: 30.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, top: 30.0),
                 child: Text(
-                  'Singup',
-                  style: TextStyle(
-                    color: Color.fromRGBO(255, 95, 0, 1),
+                  'Hello,',
+                  style: GoogleFonts.openSans(
+                    color: const Color.fromRGBO(255, 95, 0, 1),
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
+                    letterSpacing: 3.0,
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 30.0, left: 20.0),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 30.0, left: 20.0),
                 child: Text(
                   'Create a new account with us',
-                  style: TextStyle(
+                  style: GoogleFonts.roboto(
                     color: Colors.white70,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -80,7 +105,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Container(
-                    height: heightScreen / 1.7,
+                    height: heightScreen / 1.9,
                     width: widthScreen * 0.9,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -109,12 +134,8 @@ class _SignUpScreen extends State<SignUpScreen> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
-                              child: ConfirmpasswordTextFormField(),
+                              child: ConfirmPasswordTextFormField(),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: RolWidgets(),
-                            )
                           ],
                         ),
                       ),
@@ -124,20 +145,28 @@ class _SignUpScreen extends State<SignUpScreen> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Container(
-                    width: 350,
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: const Color.fromRGBO(255, 95, 0, 1),
-                            textStyle: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            )),
-                        child: const Text('Submit'),
-                        onPressed: _submit,
+                  padding: const EdgeInsets.only(top: 60.0),
+                  // ignore: sized_box_for_whitespace
+                  child: Hero(
+                    tag: 'SignUpButton',
+                    child: Container(
+                      width: 350,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: const Color.fromRGBO(255, 95, 0, 1),
+                              textStyle: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          child: Text('SIGN UP', style: GoogleFonts.openSans()),
+                          onPressed: () {
+                            setState(() {
+                              singIn();
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -146,21 +175,28 @@ class _SignUpScreen extends State<SignUpScreen> {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0),
-                  child: Container(
-                    width: 350,
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: const Color.fromRGBO(61, 178, 255, 1),
-                          textStyle: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: const Text('Login'),
-                        onPressed: () {},
+                  child: Text.rich(
+                    TextSpan(
+                      text: 'Already have an account? ',
+                      style: GoogleFonts.roboto(
+                        color: Colors.white,
+                        fontSize: 20,
                       ),
+                      children: <InlineSpan>[
+                        TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen())),
+                          text: 'Sign in',
+                          style: GoogleFonts.roboto(
+                            color: const Color.fromRGBO(13, 129, 255, 1),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
@@ -176,6 +212,7 @@ class _SignUpScreen extends State<SignUpScreen> {
     return TextFormField(
       controller: nameController,
       keyboardType: TextInputType.name,
+      style: GoogleFonts.openSans(),
       textCapitalization: TextCapitalization.words,
       validator: (name) {
         if (name!.isEmpty) {
@@ -193,6 +230,8 @@ class _SignUpScreen extends State<SignUpScreen> {
   TextFormField EmailTextFormField() {
     return TextFormField(
       controller: emailController,
+      style: GoogleFonts.openSans(),
+      keyboardType: TextInputType.emailAddress,
       validator: (val) {
         if (!val!.contains('@') || !val.contains('.')) {
           return 'Invalid Email';
@@ -212,6 +251,7 @@ class _SignUpScreen extends State<SignUpScreen> {
     return TextFormField(
       obscureText: selectedValueOne,
       controller: passwordOneController,
+      style: GoogleFonts.openSans(),
       validator: (passwordOne) {
         if (passwordOne!.isEmpty) {
           return 'Please type something';
@@ -237,6 +277,11 @@ class _SignUpScreen extends State<SignUpScreen> {
         passwordOne = passwordOne!;
         print(passwordOne);
       },
+      onChanged: (passwordOne) {
+        setState(() {
+          _enteredText = passwordOne;
+        });
+      },
       decoration: InputDecoration(
         hintText: '*****************',
         labelText: 'Password',
@@ -251,17 +296,40 @@ class _SignUpScreen extends State<SignUpScreen> {
             });
           },
         ),
+        counterText: _enteredText.length > 8 ? 'High Security' : 'Low Security',
+        counterStyle: TextStyle(
+          color: _enteredText.length > 8
+              ? const Color.fromRGBO(13, 129, 255, 1)
+              : const Color.fromRGBO(255, 95, 0, 1),
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
 
-  TextFormField ConfirmpasswordTextFormField() {
+  TextFormField ConfirmPasswordTextFormField() {
     return TextFormField(
       obscureText: passwordVisibleTwo,
       controller: passwordTwoController,
+      style: GoogleFonts.openSans(),
       validator: (passwordTwo) {
         if (passwordTwo!.isEmpty) {
           return 'Please type something';
+        }
+        if (passwordTwo.length < 8) {
+          return 'Your password needs more characters';
+        }
+        if (!passwordTwo.contains(RegExp(r"[a-z]"))) {
+          return 'Your password needs a lowercase letter';
+        }
+        if (!passwordTwo.contains(RegExp(r"[A-Z]"))) {
+          return 'Your password needs an upcase letter';
+        }
+        if (!passwordTwo.contains(RegExp(r"[0-9]"))) {
+          return 'Your password needs a number';
+        }
+        if (!passwordTwo.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+          return 'Your password needs a special character';
         }
         if (passwordTwoController.text != passwordOneController.text) {
           return 'Password are not the same';
@@ -272,6 +340,11 @@ class _SignUpScreen extends State<SignUpScreen> {
       onSaved: (passwordTwo) {
         passwordTwo = passwordTwo!;
         print(passwordTwo);
+      },
+      onChanged: (passwordTwo) {
+        setState(() {
+          _enteredText2 = passwordTwo;
+        });
       },
       decoration: InputDecoration(
         hintText: '*****************',
@@ -288,44 +361,15 @@ class _SignUpScreen extends State<SignUpScreen> {
             });
           },
         ),
+        counterText:
+            _enteredText2.length > 8 ? 'High Security' : 'Low Security',
+        counterStyle: TextStyle(
+          color: _enteredText2.length > 8
+              ? const Color.fromRGBO(13, 129, 255, 1)
+              : const Color.fromRGBO(255, 95, 0, 1),
+          fontWeight: FontWeight.bold,
+        ),
       ),
-    );
-  }
-
-  // ignore: non_constant_identifier_names
-  Row RolWidgets() {
-    return Row(
-      children: [
-        const Text(
-          'What is your rol?',
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 25.0),
-          child: DropdownButton(
-            style: const TextStyle(
-              fontSize: 18.0,
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-            ),
-            value: selectedValue,
-            items: const [
-              DropdownMenuItem(
-                  child: Text("None"), value: "None", enabled: false),
-              DropdownMenuItem(child: Text("Admin"), value: "Admin"),
-              DropdownMenuItem(child: Text("Seller"), value: "Seller"),
-            ],
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedValue = newValue!;
-                print(selectedValue);
-              });
-            },
-          ),
-        ),
-      ],
     );
   }
 }
