@@ -91,12 +91,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      'Sign in to continue',
-                      style: GoogleFonts.openSans(
-                        fontSize: 20.0,
-                        color: Colors.black54,
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Sign in to continue',
+                          style: GoogleFonts.openSans(
+                            fontSize: 20.0,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Hero(
+                            tag: 'LockIcon',
+                            child: Icon(
+                              FontAwesomeIcons.lock,
+                              size: 15,
+                              color: Color.fromRGBO(255, 95, 0, 1),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Form(
@@ -185,29 +200,32 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                              left: 50.0, right: 50.0, top: 10.0),
-                          width: 350,
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary:
-                                      const Color.fromRGBO(13, 129, 255, 0.9),
-                                  textStyle: GoogleFonts.roboto(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              child: const Text('SIGN UP'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SignUpScreen()),
-                                );
-                              },
+                        Hero(
+                          tag: 'SignUpButton',
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                left: 50.0, right: 50.0, top: 10.0),
+                            width: 350,
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary:
+                                        const Color.fromRGBO(13, 129, 255, 0.9),
+                                    textStyle: GoogleFonts.roboto(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                child: const Text('SIGN UP'),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SignUpScreen()),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),

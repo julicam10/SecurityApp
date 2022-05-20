@@ -147,23 +147,26 @@ class _SignUpScreen extends State<SignUpScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 60.0),
                   // ignore: sized_box_for_whitespace
-                  child: Container(
-                    width: 350,
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: const Color.fromRGBO(255, 95, 0, 1),
-                            textStyle: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            )),
-                        child: Text('SIGN UP', style: GoogleFonts.openSans()),
-                        onPressed: () {
-                          setState(() {
-                            singIn();
-                          });
-                        },
+                  child: Hero(
+                    tag: 'SignUpButton',
+                    child: Container(
+                      width: 350,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: const Color.fromRGBO(255, 95, 0, 1),
+                              textStyle: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          child: Text('SIGN UP', style: GoogleFonts.openSans()),
+                          onPressed: () {
+                            setState(() {
+                              singIn();
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),

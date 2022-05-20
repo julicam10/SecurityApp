@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         elevation: 0,
         title: Text(
-          'Information',
+          'Welcome',
           style: GoogleFonts.openSans(
             color: const Color.fromRGBO(255, 95, 0, 1),
             fontSize: 50,
@@ -32,8 +33,31 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Container(
+              padding: const EdgeInsets.only(left: 50.0, right: 50.0, top: 5.0),
+              child: Text(
+                'Your information',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.openSans(
+                  color: const Color.fromRGBO(255, 95, 0, 1),
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 50.0, right: 50.0, top: 5.0),
+              child: const Hero(
+                tag: 'LockIcon',
+                child: Icon(
+                  FontAwesomeIcons.lockOpen,
+                  size: 100,
+                  color: Color.fromRGBO(13, 129, 255, 0.9),
+                ),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -55,8 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             Container(
-              padding:
-                  const EdgeInsets.only(left: 50.0, right: 50.0, top: 30.0),
+              padding: const EdgeInsets.only(
+                  left: 50.0, right: 50.0, top: 30.0, bottom: 30.0),
               width: 350,
               child: SizedBox(
                 width: double.infinity,
