@@ -2,7 +2,11 @@
 
 This is a login system using Flutter and Firebase Auth.
 
-The application can virify your email, keep the sesion, create an user with email and password, then send an email to provide access and finally you can reset your password in your email by a link sent to your inbox 
+The application can :
+- :speech_balloon: Virify your email.
+- :bust_in_silhouette: Keep the sesion.
+- :bell: Create an user with email and password and it send an email to provide access.
+- :unlock: Finally you can reset your password in your email by a link sent to your inbox. 
 
 ## Interface
 
