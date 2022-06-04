@@ -1,6 +1,8 @@
-# security_app
+# Security_app
 
-This is a login system using Flutter and Firebase Auth
+This is a login system using Flutter and Firebase Auth.
+
+The application can virify your email, keep the sesion, create an user with email and password, then send an email to provide access and finally you can reset your password in your email by a link sent to your inbox 
 
 ## Interface
 
